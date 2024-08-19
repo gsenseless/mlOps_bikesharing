@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+mlflow = "*"
+scikit-learn = "*"
+boto3 = "*"
+s3fs = "*"
+ucimlrepo = "*"
+click = "*"
+
+
+
+
+[dev-packages]
+pytest-cov = "==3.*"
+
+[requires]
+python_version = "3.10"
