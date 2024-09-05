@@ -1,4 +1,4 @@
-It is a model wrapped into the container, and orchestrated by Airflow, which predicts 'Rented Bike Count' based on bike sharing​ data. Data is stored on AWS S3 (localstack actually).
+It is a model wrapped into the container, and orchestrated by Airflow, which predicts 'Rented Bike Count' based on bike sharing​ data. Data and MLflow artifacts are stored on AWS S3 (localstack actually).
 To run it:
 ```
 mkdir -p ./dags ./logs ./plugins ./config
@@ -26,3 +26,4 @@ docker compose up -d
 Wait about a minute until all services will be up. Go to:
 http://localhost:8080/ 
 User and password are "airflow". Start DAG and view logs.
+You can check MLflow as well: http://localhost:5000/

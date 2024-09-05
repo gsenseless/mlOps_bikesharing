@@ -72,6 +72,7 @@ x-airflow-common:
     # The following line can be used to set a custom config file, stored in the local config folder
     # If you want to use it, outcomment it and replace airflow.cfg with the name of your config file
     # AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+    MLFLOW_TRACKING_URI: 'http://mlflow:5000/'
   env_file: ".env"
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
@@ -101,6 +102,20 @@ services:
     env_file: ".env"
     volumes:
       - "./init-s3.py:/etc/localstack/init/ready.d/init-s3.py"
+  mlflow:
+    build:
+      context: .
+      dockerfile: mlflow.dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      MLFLOW_S3_ENDPOINT_URL: 'http://s3:4566/'
+    #  MLFLOW_S3_IGNORE_TLS: 'true'
+    volumes:
+      - "mlflow-volume:/mlflow"
+    depends_on:
+      s3:
+        condition: service_started
   postgres:
     image: postgres:13
     environment:
@@ -303,3 +318,4 @@ services:
 
 volumes:
   postgres-db-volume:
+  mlflow-volume:

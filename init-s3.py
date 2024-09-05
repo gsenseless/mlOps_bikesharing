@@ -12,3 +12,4 @@ s3 = boto3.client(
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
 )
 s3.create_bucket(Bucket=os.getenv("BUCKET_NAME"))
+s3.create_bucket(Bucket="mlflow-bucket")
