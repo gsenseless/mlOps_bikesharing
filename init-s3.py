@@ -13,3 +13,4 @@ s3 = boto3.client(
 )
 s3.create_bucket(Bucket=os.getenv("BUCKET_NAME"))
 s3.create_bucket(Bucket="mlflow-bucket")
+s3.create_bucket(Bucket=os.getenv("BUCKET_NAME") + "-tests")

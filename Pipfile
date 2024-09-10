@@ -11,3 +11,5 @@ boto3 = "*"
 ucimlrepo = "*"
 mlflow = "*"
 
+[dev-packages]
+pytest = "*"
