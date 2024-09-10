@@ -13,11 +13,10 @@ from ucimlrepo import fetch_ucirepo
 
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 EXPERIMENT_NAME = "bike_sharing_experiment"
-MODEL_NAME = "bike-sharing-model"
 mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
 
 
-def prepare_data() -> None:
+def prepare_data(data_bucket_name: str = BUCKET_NAME) -> None:
     # fetch dataset
 
     data = fetch_ucirepo(id=560)
@@ -32,20 +31,22 @@ def prepare_data() -> None:
 
     data_split = train_test_split(X, y, test_size=0.2, random_state=52)
 
-    logging.info(f"uploading data to s3 into {BUCKET_NAME} bucket")
+    logging.info(f"uploading data to s3 into {data_bucket_name} bucket")
     for name, data in zip(["train_x", "test_x", "train_y", "test_y"], data_split):
-        data.to_csv(f"s3://{BUCKET_NAME}/{name}.csv")
+        data.to_csv(f"s3://{data_bucket_name}/{name}.csv")
 
     logging.info("data is saved to s3")
 
     return None
 
 
-def train_model() -> str:
+def train_model(data_bucket_name: str = BUCKET_NAME) -> str:
+    MODEL_NAME = "bike-sharing-model"
+
     logging.info("loading data from s3")
     data = {}
     for name in ["train_x", "train_y"]:
-        data[name] = pd.read_csv(f"s3://{BUCKET_NAME}/{name}.csv")
+        data[name] = pd.read_csv(f"s3://{data_bucket_name}/{name}.csv")
 
     logging.info(f"mlflow tracking URI: {mlflow.get_tracking_uri()}")
     mlflow.set_experiment(EXPERIMENT_NAME)
@@ -55,13 +56,13 @@ def train_model() -> str:
         model = DecisionTreeRegressor(max_depth=3)
         model.fit(data["train_x"], data["train_y"])
 
-        mlflow.sklearn.log_model(model, artifact_path = "bike-sharing")
+        mlflow.sklearn.log_model(model, artifact_path="bike-sharing")
         mlflow.register_model(f"runs:/{run.info.run_id}/bike-sharing", MODEL_NAME)
         logging.info("Model logged and registered successfully")
 
     # logging.info("saving the model to s3")
     # model_filename = "bike-sharing-model.pkl"
-    # base = ObjectStoragePath(f"s3://{BUCKET_NAME}", conn_id=None)
+    # base = ObjectStoragePath(f"s3://{data_bucket_name}", conn_id=None)
     # path = base / model_filename
     # with path.open("wb") as f:
     #     pickle.dump(model, f)
@@ -69,18 +70,18 @@ def train_model() -> str:
     return MODEL_NAME
 
 
-def evaluate_model(model_name: str) -> None:
+def evaluate_model(model_name: str, data_bucket_name: str = BUCKET_NAME) -> None:
     logging.info("loading test data")
     data = {}
     for name in ["test_x", "test_y"]:
-        data[name] = pd.read_csv(f"s3://{BUCKET_NAME}/{name}.csv")
+        data[name] = pd.read_csv(f"s3://{data_bucket_name}/{name}.csv")
 
     logging.info("loading the modelfrom MLflow")
     model_uri = f"models:/{model_name}/latest"
     model = mlflow.sklearn.load_model(model_uri)
     logging.info("Latest model loaded successfully")
 
-    # base = ObjectStoragePath(f"s3://{BUCKET_NAME}/")
+    # base = ObjectStoragePath(f"s3://{data_bucket_name}/")
     # path = base / model_filename
     # with path.open("rb") as f:
     #     model = pickle.load(f)
