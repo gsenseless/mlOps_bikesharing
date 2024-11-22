@@ -4,18 +4,21 @@ To run it:
 mkdir -p ./dags ./logs ./plugins ./config
 echo -e "AIRFLOW_UID=$(id -u)" > .env
 ```
-fill in .env file with AWS credentials like so:
+fill in .env file like so:
 ```
-AWS_ACCESS_KEY_ID='xxxxxxxxxxx'
-AWS_SECRET_ACCESS_KEY='xxxxxxxxxxx'
 AWS_ENDPOINT_URL='http://localstack:4566/'
 AWS_DEFAULT_REGION='us-east-1'
 BUCKET_NAME='bike-sharing-model'
 ```
 you can do it using this command
 ```
-echo -e "\nAWS_ACCESS_KEY_ID='xxxxxxxxxxx'\nAWS_SECRET_ACCESS_KEY='xxxxxxxxxxx'\nAWS_ENDPOINT_URL='http://localstack:4566/'\nAWS_DEFAULT_REGION='us-east-1'\nBUCKET_NAME='bike-sharing-model'" >> .env
+echo -e "\nAWS_ENDPOINT_URL='http://localstack:4566/'\nAWS_DEFAULT_REGION='us-east-1'\nBUCKET_NAME='bike-sharing-model'" >> .env
 ```
+set environmental variables with your AWS secrets:
+```
+export AWS_ACCESS_KEY_ID="your_access_key_id" AWS_SECRET_ACCESS_KEY="your_secret_access_key"
+```
+
 Prepare and start containers:
 
 ```

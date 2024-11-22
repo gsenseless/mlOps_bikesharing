@@ -73,7 +73,10 @@ x-airflow-common:
     # If you want to use it, outcomment it and replace airflow.cfg with the name of your config file
     # AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
     MLFLOW_TRACKING_URI: 'http://mlflow:5000/'
-  env_file: ".env"
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  env_file:
+    - .env
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -96,12 +99,16 @@ services:
       - "4566:4566"
     environment:
       - SERVICES=s3
-      #- DEBUG=1
-      #- AWS_ACCESS_KEY_ID=xxxx
-      #- AWS_SECRET_ACCESS_KEY=xxxx
-    env_file: ".env"
+     #- DEBUG=1
+    env_file:
+      - .env
+  #  environment:
+  #    AWS_ACCESS_KEY_ID: "xxxxx"
+    #  MY_SECRET_KEY: ${MY_SECRET_KEY}
     volumes:
       - "./init-s3.py:/etc/localstack/init/ready.d/init-s3.py"
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
   mlflow:
     build:
       context: .

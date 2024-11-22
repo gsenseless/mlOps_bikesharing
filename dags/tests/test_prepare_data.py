@@ -4,12 +4,18 @@ import os
 import boto3
 import logging
 
+#boto3.set_stream_logger('botocore', level='DEBUG')
 
 TESTS_BUCKET_NAME = os.getenv("BUCKET_NAME") + "-tests"
 
 @pytest.fixture
 def clear_bucket():
-    s3 = boto3.client("s3")
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=os.environ.get("AWS_ENDPOINT_URL"),
+        aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+        aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+    )
     response = s3.list_objects_v2(Bucket=TESTS_BUCKET_NAME)
 
     if "Contents" in response:
@@ -23,7 +29,13 @@ def prepare_data_fixture(clear_bucket):
 
 @pytest.fixture
 def get_bucket_keys(prepare_data_fixture):
-    s3 = boto3.client("s3")
+    #s3 = boto3.client("s3")
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=os.environ.get("AWS_ENDPOINT_URL"),
+        aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+        aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+    )
     response = s3.list_objects_v2(Bucket=TESTS_BUCKET_NAME)
     if "Contents" in response:
         return {item["Key"]: item["Size"] for item in response["Contents"]}
