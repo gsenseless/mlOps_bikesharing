@@ -12,6 +12,10 @@ ENV PYTHONUNBUFFERED=1
 USER airflow
 WORKDIR /opt/airflow
 
+### temp workaround
+RUN python -m ensurepip --upgrade
+RUN python -m pip install --upgrade setuptools
+RUN python -m pip install numpy==1.26.4
 
 RUN pip install --no-cache-dir pipenv
 COPY Pipfile /Pipfile
