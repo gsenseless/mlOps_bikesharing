@@ -20,7 +20,6 @@ export AWS_ACCESS_KEY_ID="your_access_key_id" AWS_SECRET_ACCESS_KEY="your_secret
 ```
 
 Prepare and start containers:
-
 ```
 docker compose build
 docker compose up airflow-init
@@ -30,5 +29,11 @@ Wait about a minute until all services will be up. Go to:
 http://localhost:8080/ 
 User and password are "airflow". Start DAG and view logs.
 You can check MLflow as well: http://localhost:5000/
+
+If you need to stop the containers:
+```
+docker compose down --volumes
+```
+
 
 [![tests](https://github.com/gsenseless/mlOps_bikesharing/actions/workflows/CI.yml/badge.svg)](https://github.com/gsenseless/mlOps_bikesharing/actions/workflows/CI.yml)
