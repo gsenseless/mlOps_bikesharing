@@ -30,3 +30,5 @@ Wait about a minute until all services will be up. Go to:
 http://localhost:8080/ 
 User and password are "airflow". Start DAG and view logs.
 You can check MLflow as well: http://localhost:5000/
+
+[![tests](https://github.com/gsenseless/mlOps_bikesharing/actions/workflows/CI.yml/badge.svg)](https://github.com/gsenseless/mlOps_bikesharing/actions/workflows/CI.yml)
