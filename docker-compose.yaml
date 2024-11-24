@@ -75,8 +75,10 @@ x-airflow-common:
     MLFLOW_TRACKING_URI: 'http://mlflow:5000/'
     AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
     AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-  env_file:
-    - .env
+    AIRFLOW_UID: ${AIRFLOW_UID}
+    AWS_ENDPOINT_URL: "http://localstack:4566/"
+    AWS_DEFAULT_REGION: "us-east-1"
+    BUCKET_NAME: "bike-sharing-m"  
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -90,7 +92,6 @@ x-airflow-common:
       condition: service_healthy
     postgres:
       condition: service_healthy
-
 services:
   s3:
     image: localstack/localstack
@@ -98,13 +99,9 @@ services:
     ports:
       - "4566:4566"
     environment:
-      - SERVICES=s3
+      <<: *airflow-common-env
+      SERVICES: "s3"
      #- DEBUG=1
-    env_file:
-      - .env
-  #  environment:
-  #    AWS_ACCESS_KEY_ID: "xxxxx"
-    #  MY_SECRET_KEY: ${MY_SECRET_KEY}
     volumes:
       - "./init-s3.py:/etc/localstack/init/ready.d/init-s3.py"
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"

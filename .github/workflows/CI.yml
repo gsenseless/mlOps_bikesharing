@@ -17,16 +17,8 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AIRFLOW_UID: $(id -u)
     steps:
-      - name: Make env file
-        uses: SpicyPizza/create-envfile@v2.0
-        with:
-          envkey_AIRFLOW_UID: 50000
-          envkey_AWS_ENDPOINT_URL: "http://localstack:4566/"
-          envkey_AWS_DEFAULT_REGION: "'us-east-1'"
-          envkey_BUCKET_NAME: "'bike-sharing-m'"
-          file_name: .env
-            
       - name: Checkout code
         uses: actions/checkout@v2
       

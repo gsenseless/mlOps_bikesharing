@@ -2,17 +2,6 @@ It is a model wrapped into the container, and orchestrated by Airflow, which pre
 To run it:
 ```
 mkdir -p ./dags ./logs ./plugins ./config
-echo -e "AIRFLOW_UID=$(id -u)" > .env
-```
-fill in .env file like so:
-```
-AWS_ENDPOINT_URL='http://localstack:4566/'
-AWS_DEFAULT_REGION='us-east-1'
-BUCKET_NAME='bike-sharing-model'
-```
-you can do it using this command
-```
-echo -e "\nAWS_ENDPOINT_URL='http://localstack:4566/'\nAWS_DEFAULT_REGION='us-east-1'\nBUCKET_NAME='bike-sharing-model'" >> .env
 ```
 set environmental variables with your AWS secrets:
 ```
