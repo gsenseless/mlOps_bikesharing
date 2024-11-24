@@ -7,6 +7,10 @@ set environmental variables with your AWS secrets:
 ```
 export AWS_ACCESS_KEY_ID="your_access_key_id" AWS_SECRET_ACCESS_KEY="your_secret_access_key"
 ```
+and with Airflow user ID:
+```
+export AIRFLOW_UI=$(id -u)
+```
 
 Prepare and start containers:
 ```
