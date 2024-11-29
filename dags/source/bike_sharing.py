@@ -33,7 +33,7 @@ def prepare_data(data_bucket_name: str = BUCKET_NAME) -> None:
 
     logging.info(f"uploading data to s3 into {data_bucket_name} bucket")
     for name, data in zip(["train_x", "test_x", "train_y", "test_y"], data_split):
-        data.to_csv(f"s3://{data_bucket_name}/{name}.csv")
+        data.to_csv(f"s3://{data_bucket_name}/{name}.csv", index=False)
 
     logging.info("data is saved to s3")
 
@@ -41,7 +41,7 @@ def prepare_data(data_bucket_name: str = BUCKET_NAME) -> None:
 
 
 def train_model(data_bucket_name: str = BUCKET_NAME) -> str:
-    MODEL_NAME = "bike-sharing-model"
+    MODEL_NAME = os.getenv("MODEL_NAME")
 
     logging.info("loading data from s3")
     data = {}

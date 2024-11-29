@@ -78,7 +78,8 @@ x-airflow-common:
     AIRFLOW_UID: ${AIRFLOW_UID}
     AWS_ENDPOINT_URL: "http://localstack:4566/"
     AWS_DEFAULT_REGION: "us-east-1"
-    BUCKET_NAME: "bike-sharing-m"  
+    BUCKET_NAME: "bike-sharing-m" 
+    MODEL_NAME: bike-sharing-model 
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -319,6 +320,23 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+
+  prediction-api:
+    build: 
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      <<: *airflow-common-env
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    depends_on:
+      - mlflow
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   postgres-db-volume:
