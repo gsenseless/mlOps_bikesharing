@@ -4,7 +4,7 @@ It is a model wrapped into the container, and orchestrated by Airflow, which pre
 
 ### Prerequisites
 ```
-mkdir -p ./dags ./logs ./plugins ./config
+mkdir -p ./logs ./plugins ./config
 ```
 Set environmental variables with your AWS secrets:
 ```
@@ -22,12 +22,16 @@ docker compose build
 docker compose up airflow-init
 docker compose up -d
 ```
-Wait about a minute until all services will be up.
+Wait about two minutes until all services will be up.
 
 ### Accessing Services
 - **Airflow**: http://localhost:8080/ (user/password: "airflow")
 - **MLflow**: http://localhost:5000/
 - **Prediction API**: http://localhost:8000/
+
+You should see:
+1) a completed or running DAG job in Airflow.
+2) a model registered in the MLflow models section.
 
 ### Using the Prediction API
 The prediction service provides the following endpoints:
