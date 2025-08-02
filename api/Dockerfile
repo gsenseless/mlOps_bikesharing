@@ -2,6 +2,7 @@ FROM python:3.12-slim
 
 # RUN useradd -m safeuser -u 5000
 
+# Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app

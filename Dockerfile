@@ -17,25 +17,18 @@ USER airflow
 
 WORKDIR /opt/airflow
 
+# Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" pandas
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" "scikit-learn"
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" mlflow
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" "numpy==1.26.4"
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" "s3fs==2024.6.1"
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" boto3
-
-RUN uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}" ucimlrepo
-
-
-#ENV UV_PROJECT_ENVIRONMENT="~/.local"
-
+# Copy dependency files
+COPY pyproject.toml ./
+### uv sync doen't work with Airflow
 #COPY uv.lock .
-#COPY pyproject.toml .
 
-# RUN /home/airflow/.local/bin/python3 -m uv sync --extra train
-# RUN /home/airflow/.local/bin/python3 -m uv pip install --no-cache "apache-airflow==${AIRFLOW_VERSION}"
+# Generate requirements.txt from pyproject.toml and install with system Python
+RUN echo "apache-airflow==${AIRFLOW_VERSION}" > airflow-constraint.txt
 
-#RUN uv pip install --system --no-deps --require-hashes --extra train ./uv.lock
+RUN uv pip compile pyproject.toml --extra train --constraint airflow-constraint.txt --output-file requirements.txt
+RUN uv pip install --no-cache-dir -r requirements.txt
+
+

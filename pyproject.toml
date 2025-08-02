@@ -8,11 +8,13 @@ dependencies = [
     "numpy==1.26.4",
     "s3fs==2024.6.1",
     "boto3",
+    "flask==2.2.5",
+    "connexion==2.14.2",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest"]
-train = ["ucimlrepo"]
+train = ["apache-airflow", "ucimlrepo"]
 api = [
     "fastapi",
     "uvicorn",

@@ -2,6 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /mlflow
 
+# Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 ### TODO: add as optinal dependency to pyproject
