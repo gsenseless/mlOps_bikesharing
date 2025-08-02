@@ -39,3 +39,8 @@ include = ["*"]
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["dags/tests", "tests"]
+pythonpath = ["dags", ".", "/opt/airflow/dags"]
+addopts = "-v"
