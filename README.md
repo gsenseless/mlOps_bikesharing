@@ -73,6 +73,19 @@ To stop all containers:
 docker compose down --volumes --remove-orphans
 ```
 
+## Code Quality
+To set up pre-commit hooks:
+```bash
+chmod +x scripts/setup-precommit.sh
+./scripts/setup-precommit.sh
+```
+### Pre-commit Hooks
+The project uses pre-commit hooks with:
+- **Black**: Code formatting
+- **isort**: Import sorting
+- **flake8**: Code linting and style checking
+```
+
 Notes:
 - Workflow is orchestrated by Apache Airflow.
 - LocalStack (a cloud emulator) for S3 storage is used.
