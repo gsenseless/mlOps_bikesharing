@@ -5,7 +5,7 @@ from airflow.io.path import ObjectStoragePath
 
 @dag(
     schedule="@once",
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["edu"],
 )

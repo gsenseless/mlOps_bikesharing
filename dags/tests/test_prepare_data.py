@@ -29,7 +29,6 @@ def prepare_data_fixture(clear_bucket):
 
 @pytest.fixture
 def get_bucket_keys(prepare_data_fixture):
-    #s3 = boto3.client("s3")
     s3 = boto3.client(
         "s3",
         endpoint_url=os.environ.get("AWS_ENDPOINT_URL"),
