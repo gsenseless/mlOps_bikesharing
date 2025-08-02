@@ -3,7 +3,7 @@ import logging
 import boto3
 
 
-logging.info("init-s3.py script launch")
+logging.info("init-s3.py script launch. Going to create s3 buckets.")
 
 s3 = boto3.client(
     "s3",
@@ -14,3 +14,4 @@ s3 = boto3.client(
 s3.create_bucket(Bucket="mlflow-bucket")
 s3.create_bucket(Bucket=os.environ.get("BUCKET_NAME"))
 s3.create_bucket(Bucket=os.environ.get("BUCKET_NAME") + "-tests")
+logging.info("Three buckets are created (mlflow, main and test).")

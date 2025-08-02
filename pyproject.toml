@@ -28,7 +28,14 @@ package = false
 name = "pypi"
 url = "https://pypi.org/simple"
 
-[tool.setuptools.packages.find]
+[tool.setuptools.packages.find-namespace]
 where = ["."]
 include = ["dags*"]
 exclude = ["logs*"]
+
+[tool.setuptools.packages.find]
+where = ["dags"]
+include = ["*"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]

@@ -56,15 +56,15 @@ def load_model():
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Bike Sharing Prediction API"}
+    return {"message": "Welcome to Bike Sharing Prediction API. Use curl request described in README.md. Or check localhost:8000/health"}
 
 @app.get("/health")
 async def health_check():
     model = load_model()
     if model is None:
         raise HTTPException(status_code=503, detail="Model not loaded. Please ensure the model exists in MLflow by:\n"
-                   "1. Open Airflow UI at http://localhost:8080\n"
-                   "2. Login with airflow/airflow\n"
+                   "1. Open Airflow UI at http://localhost:8080 \n "
+                   "2. Login with airflow/airflow \n "
                    "3. Find and trigger the bike_sharing_dag to train and register the model")
     return {
         "status": "healthy",
