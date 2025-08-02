@@ -31,6 +31,7 @@ Wait about two minutes until all services are up.
 
 
 Go to the Airflow UI and trigger or turn on the "bikes_taskflow_api" DAG. Go to the DAG tasks log. After jobs are complete, you can check the model metric (Mean Absolute Error):
+<img width="1170" height="551" alt="image" src="https://github.com/user-attachments/assets/f6105c19-63dc-4ebc-bad8-7eca55ce9986" />
 
 After that you should see a model registered in the MLflow models section.
 
