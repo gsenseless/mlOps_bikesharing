@@ -1,4 +1,4 @@
-It is a model wrapped into the container, and orchestrated by Airflow, which predicts 'Rented Bike Count' based on bike sharing​ data. Data and MLflow artifacts are stored on S3 (localstack).
+It is a model that predicts 'Rented Bike Count' based on bike sharing data.
 
 ## Setup
 
@@ -6,7 +6,7 @@ It is a model wrapped into the container, and orchestrated by Airflow, which pre
 ```
 mkdir -p ./logs ./plugins ./config
 ```
-Set environmental variables with your AWS secrets:
+Set environment variables with your AWS secrets:
 ```
 export AWS_ACCESS_KEY_ID="your_access_key_id" AWS_SECRET_ACCESS_KEY="your_secret_access_key"
 ```
@@ -22,16 +22,17 @@ docker compose build
 docker compose up airflow-init
 docker compose up -d
 ```
-Wait about two minutes until all services will be up.
+Wait about two minutes until all services are up.
 
 ### Accessing Services
 - **Airflow**: http://localhost:8080/ (user/password: "airflow")
 - **MLflow**: http://localhost:5000/
 - **Prediction API**: http://localhost:8000/
 
-You should see:
-1) a completed or running DAG job in Airflow.
-2) a model registered in the MLflow models section.
+
+Go to the Airflow UI and trigger or turn on the "bikes_taskflow_api" DAG. Go to the DAG tasks log. After jobs are complete, you can check the model metric (Mean Absolute Error):
+
+After that you should see a model registered in the MLflow models section.
 
 ### Using the Prediction API
 The prediction service provides the following endpoints:
@@ -69,7 +70,17 @@ curl -X POST "http://localhost:8000/predict" \
 ### Stopping Services
 To stop all containers:
 ```
-docker compose down --volumes
+docker compose down --volumes --remove-orphans
 ```
+
+Notes:
+- Workflow is orchestrated by Apache Airflow.
+- LocalStack (a cloud emulator) for S3 storage is used.
+- The model deployment is containerized and could be deployed to the cloud.
+- Model is registered in the MLflow Model Registry.
+- Unit tests are present in dags/tests/
+- GitHub Actions CI/CD pipeline is used.
+
+
 
 [![tests](https://github.com/gsenseless/mlOps_bikesharing/actions/workflows/CI.yml/badge.svg)](https://github.com/gsenseless/mlOps_bikesharing/actions/workflows/CI.yml)
