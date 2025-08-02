@@ -1,6 +1,6 @@
 from datetime import datetime
+
 from airflow.decorators import dag, task
-from airflow.io.path import ObjectStoragePath
 
 
 @dag(

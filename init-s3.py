@@ -1,7 +1,7 @@
-import os
 import logging
-import boto3
+import os
 
+import boto3
 
 logging.info("init-s3.py script launch. Going to create s3 buckets.")
 

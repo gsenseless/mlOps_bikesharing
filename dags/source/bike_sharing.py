@@ -1,15 +1,14 @@
-import os
-
 # import pickle
 import logging
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import mean_absolute_error
+import os
+
 import mlflow
 import mlflow.sklearn
+import pandas as pd
+from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeRegressor
 from ucimlrepo import fetch_ucirepo
-
 
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 EXPERIMENT_NAME = "bike_sharing_experiment"
@@ -18,22 +17,22 @@ mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
 
 def prepare_data(data_bucket_name: str = BUCKET_NAME) -> None:
     """Prepare and split the bike sharing dataset for training and testing.
-    
+
     This function fetches the bike sharing dataset from UCI repository, preprocesses
     the data by removing non-numeric columns and the Date column, splits the data
     into training and testing sets, and uploads the split datasets to S3.
-    
+
     Args:
         data_bucket_name (str): The name of the S3 bucket where the data will be stored.
                                Defaults to the BUCKET_NAME environment variable.
-    
+
     Returns:
         None: This function doesn't return any value but uploads data to S3.
-    
+
     Note:
         The function creates four CSV files in S3:
         - train_x.csv: Training features
-        - test_x.csv: Testing features  
+        - test_x.csv: Testing features
         - train_y.csv: Training target variable
         - test_y.csv: Testing target variable
     """
@@ -62,15 +61,15 @@ def prepare_data(data_bucket_name: str = BUCKET_NAME) -> None:
 
 def train_model(data_bucket_name: str = BUCKET_NAME) -> str:
     """Train a Decision Tree model for bike sharing prediction.
-    
+
     This function loads the training data from S3, trains a Decision Tree Regressor
     model with MLflow tracking, logs the model artifacts, and registers the model
     in MLflow Model Registry.
-    
+
     Args:
         data_bucket_name (str): The name of the S3 bucket containing the training data.
                                Defaults to the BUCKET_NAME environment variable.
-    
+
     Returns:
         str: The name of the registered model in MLflow Model Registry.
     """
@@ -105,16 +104,16 @@ def train_model(data_bucket_name: str = BUCKET_NAME) -> str:
 
 def evaluate_model(model_name: str, data_bucket_name: str = BUCKET_NAME) -> None:
     """Evaluate the trained bike sharing model on test data.
-    
+
     This function loads the test data from S3, loads the latest version of the
     trained model from MLflow Model Registry, makes predictions on the test set,
     and calculates the Mean Absolute Error (MAE) to assess model performance.
-    
+
     Args:
         model_name (str): The name of the model in MLflow Model Registry to evaluate.
         data_bucket_name (str): The name of the S3 bucket containing the test data.
                                Defaults to the BUCKET_NAME environment variable.
-    
+
     Returns:
         None: This function doesn't return any value but logs the evaluation metrics.
     """
