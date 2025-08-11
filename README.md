@@ -90,6 +90,7 @@ The project uses pre-commit hooks with:
 - Workflow is orchestrated by Apache Airflow.
 - LocalStack (a cloud emulator) for S3 storage is used.
 - The model deployment is containerized and could be deployed to the cloud.
+- Docker compose is used as a IAC tool.
 - Model is registered in the MLflow Model Registry.
 - Unit tests are present in dags/tests/
 - GitHub Actions CI/CD pipeline is used.
